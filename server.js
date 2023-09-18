@@ -6,7 +6,7 @@ initMongoDB();
 // create app
 const app = express();
 // config
-const port = process.env.PORT || 5002;
+const port = 5002;
 // config: parses json from client
 app.use(express.json());
 // route define
