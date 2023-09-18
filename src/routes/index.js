@@ -1,24 +1,11 @@
-const express = require('express');
-const jwtVerify = require('../middleware/jwtAuthentication');
-const router = express.Router();
+const dummyRouter = require('./dummy')
+const {errorHandler, notFound} = require('../middleware/errorHandler')
 
-const { healthCheck, dummyGetUser, dummyPostUser, dummyPutUser, dummyDeleteUser } = require("../controllers/index");
-// this is for all routes
-// router.use(jwtVerify); 
+const initRoutes = (app) => {
+    app.use('/v1/api/common', dummyRouter)
+    
+    app.use(notFound)
+    app.use(errorHandler)
+}
 
-router.route('/debug').get((req, res) => {
-    if (true) {
-        res.status(400);
-        throw new Error("This must be failed!");
-    }
-    res.status(400).json({ code: 400, msg: "fail" });
-});
-
-router.route('/health-check').get(healthCheck);
-// this is for a specific route
-router.route('/health-check').post(jwtVerify, healthCheck);
-
-
-router.route('/dummy-user/:id').get(dummyGetUser).put(dummyPutUser).delete(dummyDeleteUser);
-router.route('/dummy-user').post(dummyPostUser);
-module.exports = router;
+module.exports = initRoutes
